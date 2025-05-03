@@ -1,3 +1,4 @@
+import logging
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -26,6 +27,7 @@ class Scraper(ABC):
         """
         self.repertoire_url = repertoire_url
         self.theater_name = theater_name
+        self.logger = logging.getLogger(f"scraper.{self.theater_name}")
 
     async def scrape_repertoire(self) -> str | None:
         """
@@ -41,7 +43,9 @@ class Scraper(ABC):
                 return response.text
 
         except httpx.HTTPError as e:
-            print(f"Error fetching data from {self.theater_name} theater: {e}")
+            self.logger.error(
+                f"Error fetching data from {self.theater_name} theater: {e}"
+            )
             return None
 
     @abstractmethod
@@ -68,9 +72,19 @@ class Scraper(ABC):
             Parsed performance data or None if scraping failed
         """
         html_content = await self.scrape_repertoire()
-        if html_content:
-            try:
-                return await self.parse_repertoire(html_content)
-            except ValueError:
-                return None
-        return None
+        if not html_content:
+            self.logger.warning(
+                f"Failed to retrieve HTML content for {self.theater_name}"
+            )
+            return None
+
+        try:
+            return await self.parse_repertoire(html_content)
+        except ValueError as e:
+            self.logger.error(f"Error parsing {self.theater_name} content: {e}")
+            return None
+        except Exception as e:
+            self.logger.exception(
+                f"Unexpected error while parsing {self.theater_name} content: {e}"
+            )
+            return None
