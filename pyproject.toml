@@ -8,3 +8,12 @@ dependencies = [
     "bs4>=0.0.2",
     "fastapi[standard]>=0.115.12",
 ]
+
+[project.optional-dependencies]
+tests = [
+    "pytest>=8.3.5",
+    "trio>=0.30.0",
+]
+dev = [
+    "ipykernel>=6.29.5",
+]
