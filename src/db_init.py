@@ -19,19 +19,16 @@ def seed_theaters_and_stages(session: Session) -> None:
         # Create theaters
         theaters = [
             Theater(
-                theater_id=1,
                 name="fomenki",
                 full_name="Мастерская Петра Фоменко",
                 url="https://fomenko.theatre.ru/",
             ),
             Theater(
-                theater_id=2,
                 name="ramt",
                 full_name="Российский академический молодежный театр",
                 url="https://ramt.ru/",
             ),
             Theater(
-                theater_id=3,
                 name="sti",
                 full_name="Студия театрального искусства",
                 url="https://sti.ru/",
@@ -43,57 +40,48 @@ def seed_theaters_and_stages(session: Session) -> None:
         stages = [
             # Fomenki stages
             Stage(
-                stage_id=1,
                 name="Основная сцена",
                 theater_id=1,
                 address="Набережная Тараса Шевченко, 30",
             ),
             Stage(
-                stage_id=2,
                 name="Новая сцена",
                 theater_id=1,
                 address="Набережная Тараса Шевченко, 29",
             ),
             # RAMT stages
             Stage(
-                stage_id=3,
                 name="Большая сцена",
                 theater_id=2,
                 address="Театральная площадь, 2",
             ),
             Stage(
-                stage_id=4,
                 name="Маленькая сцена",
                 theater_id=2,
                 address="Театральная площадь, 2",
             ),
             Stage(
-                stage_id=5,
                 name="Черная комната",
                 theater_id=2,
                 address="Театральная площадь, 2",
             ),
             Stage(
-                stage_id=6,
                 name="Театральный двор",
                 theater_id=2,
                 address="Театральная площадь, 2",
             ),
             Stage(
-                stage_id=7,
                 name="Белая комната",
                 theater_id=2,
                 address="Театральная площадь, 2",
             ),
             Stage(
-                stage_id=8,
                 name="Большая сцена*",
                 theater_id=2,
                 address="Театральная площадь, 2",
             ),
             # STI stages
             Stage(
-                stage_id=9,
                 name="Основная сцена",
                 theater_id=3,
                 address="ул. Станиславского, 21 стр. 7",
