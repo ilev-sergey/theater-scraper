@@ -3,9 +3,11 @@ import re
 
 from bs4 import BeautifulSoup
 from bs4.element import Tag
+from sqlmodel import Session
 
-from models import Performance
-
+from ..db import engine
+from ..models import Performance
+from ..services.stage_service import StageService
 from .scraper import Scraper
 
 
@@ -98,6 +100,18 @@ class FomenkiScraper(Scraper):
         """
         return event.find("a").get("title")
 
+    async def _parse_performance_stage(self, event: Tag) -> str:
+        """
+        Extract performance stage from a single event tag.
+
+        Args:
+            event: BeautifulSoup Tag object representing a single event
+
+        Returns:
+            Performance stage as a string
+        """
+        return event.find("p", class_="place").text
+
     async def parse_repertoire(self, html_content: str) -> list[Performance]:
         """
         Parse the HTML content from Fomenki theater website and extract performance information.
@@ -134,8 +148,13 @@ class FomenkiScraper(Scraper):
                 minute=minute,
             )
             performance_name = await self._parse_performance_name(event)
+            performance_stage = await self._parse_performance_stage(event)
+            with Session(engine) as session:
+                stage_id = StageService().get_stage_id_by_name(
+                    session, performance_stage
+                )
             performance = Performance(
-                stage_id=1,
+                stage_id=stage_id,
                 title=performance_name,
                 datetime=datetime_obj,
             )

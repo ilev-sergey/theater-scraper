@@ -41,3 +41,21 @@ class StageService(Service[Stage]):
             .limit(limit)
         )
         return session.exec(query).all()
+
+    def get_stage_id_by_name(
+        self,
+        session: Session,
+        stage_name: str,
+    ) -> int | None:
+        """
+        Get stage ID by stage name.
+
+        Args:
+            session: SQLModel database session
+            stage_name: Name of the stage to look up
+
+        Returns:
+            Stage ID if found, None otherwise
+        """
+        query = select(Stage.stage_id).where(Stage.name == stage_name)
+        return session.exec(query).first()
