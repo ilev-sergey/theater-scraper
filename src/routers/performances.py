@@ -1,8 +1,9 @@
-from fastapi import APIRouter
-from sqlmodel import Session, select
+from fastapi import APIRouter, HTTPException, status
+from sqlmodel import Session
 
 from ..db import engine
 from ..models import Performance, TheaterName
+from ..services.performance_service import PerformanceService
 
 router = APIRouter(
     prefix="/performances",
@@ -11,25 +12,32 @@ router = APIRouter(
 )
 
 
-@router.get("/{performance_id}")
-async def get_performance(performance_id: int) -> Performance:
-    """
-    Get performance by ID.
-    """
-    return Performance(
-        performance_id=performance_id,
-        title="Sample Title",
-        stage_id=1,
-        datetime="2023-10-01T19:00:00",
-    )
-
-
 @router.get("/")
-async def list_performances(
+async def get_performances(
     theater_name: TheaterName | None = None,
 ) -> list[Performance]:
     """
-    Get list of performances by theater name or all performances if no theater name is provided.
+    Get all performances or filter by theater name if provided.
     """
     with Session(engine) as session:
-        return session.exec(select(Performance)).all()
+        service = PerformanceService()
+        if theater_name:
+            return service.get_by_theater_name(session, theater_name)
+        else:
+            return service.get_all(session)
+
+
+@router.get("/{performance_id}")
+async def get_performance_by_id(performance_id: int) -> Performance:
+    """
+    Get performance by ID.
+    """
+    with Session(engine) as session:
+        service = PerformanceService()
+        performance = service.get_by_id(session, performance_id)
+        if performance is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Performance with ID {performance_id} not found",
+            )
+        return performance
