@@ -11,8 +11,8 @@ def seed_theaters_and_stages(session: Session) -> None:
     """
     try:
         # Check if we already have theaters (to avoid duplicates)
-        theater_count = session.exec(select(Theater)).count()
-        if theater_count > 0:
+        theater = session.exec(select(Theater)).first()
+        if theater is not None:
             print("Database already seeded with theaters.")
             return
 
