@@ -1,7 +1,7 @@
 import datetime
 from enum import Enum
 
-from pydantic import BaseModel
+from sqlmodel import Field, SQLModel
 
 
 class TheaterName(str, Enum):
@@ -10,22 +10,22 @@ class TheaterName(str, Enum):
     sti = "sti"
 
 
-class Theater(BaseModel):
-    theater_id: int
+class Theater(SQLModel, table=True):
+    theater_id: int | None = Field(default=None, primary_key=True)
     name: TheaterName
     full_name: str | None = None
     url: str | None = None
 
 
-class Stage(BaseModel):
-    stage_id: int
+class Stage(SQLModel, table=True):
+    stage_id: int | None = Field(default=None, primary_key=True)
     name: str
     theater_id: int
     address: str | None = None
 
 
-class Performance(BaseModel):
-    performance_id: int
+class Performance(SQLModel, table=True):
+    performance_id: int | None = Field(default=None, primary_key=True)
     title: str
     stage_id: int
     datetime: datetime.datetime
