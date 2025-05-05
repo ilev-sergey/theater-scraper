@@ -6,6 +6,7 @@ from sqlmodel import Session
 from .db import create_db_and_tables, engine
 from .db_init import seed_theaters_and_stages
 from .routers import db, performances, stages, theaters
+from .scrapers.manager import ScraperManager
 
 
 @asynccontextmanager
@@ -16,7 +17,10 @@ async def lifespan(app: FastAPI):
     create_db_and_tables()
     with Session(engine) as session:
         seed_theaters_and_stages(session)
-        yield
+
+    await ScraperManager.run_all_scrapers()
+
+    yield
 
 
 app = FastAPI(lifespan=lifespan)
