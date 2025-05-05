@@ -13,7 +13,7 @@ router = APIRouter(
 
 
 @router.get("/")
-async def get_theaters() -> list[Stage]:
+async def get_theaters() -> list[Theater]:
     """
     Get all theaters or filter by theater name if provided.
     """
