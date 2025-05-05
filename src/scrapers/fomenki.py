@@ -135,7 +135,6 @@ class FomenkiScraper(Scraper):
             )
             performance_name = await self._parse_performance_name(event)
             performance = Performance(
-                performance_id=0,
                 stage_id=1,
                 title=performance_name,
                 datetime=datetime_obj,
