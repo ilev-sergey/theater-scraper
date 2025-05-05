@@ -46,12 +46,32 @@ def seed_theaters_and_stages(session: Session) -> None:
         stages = [
             # Fomenki stages
             Stage(
-                name="Основная сцена",
+                name="Старая сцена, Зелёный зал",
                 theater_id=fomenki.theater_id,
                 address="Набережная Тараса Шевченко, 30",
             ),
             Stage(
-                name="Новая сцена",
+                name="Старая сцена, Серый зал",
+                theater_id=fomenki.theater_id,
+                address="Набережная Тараса Шевченко, 30",
+            ),
+            Stage(
+                name="Новая сцена, Малый зал",
+                theater_id=fomenki.theater_id,
+                address="Набережная Тараса Шевченко, 29",
+            ),
+            Stage(
+                name="Новая сцена, Малый зал",
+                theater_id=fomenki.theater_id,
+                address="Набережная Тараса Шевченко, 29",
+            ),
+            Stage(
+                name="Новая сцена, Большой зал",
+                theater_id=fomenki.theater_id,
+                address="Набережная Тараса Шевченко, 29",
+            ),
+            Stage(
+                name="Новая сцена, Фойе",
                 theater_id=fomenki.theater_id,
                 address="Набережная Тараса Шевченко, 29",
             ),
