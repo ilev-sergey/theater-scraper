@@ -93,7 +93,7 @@ def seed_theaters_and_stages(session: Session) -> None:
             ),
             # STI stages
             Stage(
-                stage_id=5,
+                stage_id=9,
                 name="Основная сцена",
                 theater_id=3,
                 address="ул. Станиславского, 21 стр. 7",
