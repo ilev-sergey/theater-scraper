@@ -2,6 +2,7 @@ from sqlmodel import Session, select
 
 from .db import engine
 from .models import Stage, Theater
+from .services.theater_service import TheaterService
 
 
 def seed_theaters_and_stages(session: Session) -> None:
@@ -35,60 +36,64 @@ def seed_theaters_and_stages(session: Session) -> None:
             ),
         ]
         session.add_all(theaters)
+        session.commit()
+
+        fomenki = TheaterService().get_by_theater_name(session, "fomenki")
+        ramt = TheaterService().get_by_theater_name(session, "ramt")
+        sti = TheaterService().get_by_theater_name(session, "sti")
 
         # Create stages
         stages = [
             # Fomenki stages
             Stage(
                 name="Основная сцена",
-                theater_id=1,
+                theater_id=fomenki.theater_id,
                 address="Набережная Тараса Шевченко, 30",
             ),
             Stage(
                 name="Новая сцена",
-                theater_id=1,
+                theater_id=fomenki.theater_id,
                 address="Набережная Тараса Шевченко, 29",
             ),
             # RAMT stages
             Stage(
                 name="Большая сцена",
-                theater_id=2,
+                theater_id=ramt.theater_id,
                 address="Театральная площадь, 2",
             ),
             Stage(
                 name="Маленькая сцена",
-                theater_id=2,
+                theater_id=ramt.theater_id,
                 address="Театральная площадь, 2",
             ),
             Stage(
                 name="Черная комната",
-                theater_id=2,
+                theater_id=ramt.theater_id,
                 address="Театральная площадь, 2",
             ),
             Stage(
                 name="Театральный двор",
-                theater_id=2,
+                theater_id=ramt.theater_id,
                 address="Театральная площадь, 2",
             ),
             Stage(
                 name="Белая комната",
-                theater_id=2,
+                theater_id=ramt.theater_id,
                 address="Театральная площадь, 2",
             ),
             Stage(
                 name="Большая сцена*",
-                theater_id=2,
+                theater_id=ramt.theater_id,
                 address="Театральная площадь, 2",
             ),
             # STI stages
             Stage(
                 name="Основная сцена",
-                theater_id=3,
+                theater_id=sti.theater_id,
                 address="ул. Станиславского, 21 стр. 7",
             ),
         ]
         session.add_all(stages)
-
         session.commit()
         print("Successfully seeded database with theaters and stages.")
 
