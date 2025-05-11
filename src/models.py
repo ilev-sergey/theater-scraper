@@ -38,3 +38,25 @@ class Performance(SQLModel, table=True):
     author: str | None = None
 
     stage: "Stage" = Relationship(back_populates="performances")
+
+
+class TheaterResponse(SQLModel):
+    theater_id: int
+    full_name: str | None = None
+    url: str | None = None
+
+
+class StageResponse(SQLModel):
+    stage_id: int
+    name: str
+    address: str | None = None
+
+
+class PerformanceResponse(SQLModel):
+    performance_id: int
+    title: str
+    datetime: datetime.datetime
+    director: str | None = None
+    author: str | None = None
+    stage: StageResponse
+    theater: TheaterResponse
