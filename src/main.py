@@ -3,9 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from sqlmodel import Session
 
+from .api import db, performances, stages, theaters
 from .db import create_db_and_tables, engine
 from .db_init import seed_theaters_and_stages
-from .routers import db, performances, stages, theaters
 from .scrapers.manager import ScraperManager
 
 
