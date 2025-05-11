@@ -2,8 +2,8 @@ from fastapi import APIRouter, HTTPException, status
 from sqlmodel import Session
 
 from ..db import engine
-from ..models import Performance, TheaterName
-from ..services.performance_service import PerformanceService
+from ..models import Performance, PerformanceResponse, TheaterName
+from ..services.performance_service import PerformanceResponseService, PerformanceService
 
 router = APIRouter(
     prefix="/performances",
@@ -15,12 +15,12 @@ router = APIRouter(
 @router.get("/")
 async def get_performances(
     theater_name: TheaterName | None = None,
-) -> list[Performance]:
+) -> list[PerformanceResponse]:
     """
     Get all performances or filter by theater name if provided.
     """
     with Session(engine) as session:
-        service = PerformanceService()
+        service = PerformanceResponseService()
         if theater_name:
             return service.get_by_theater_name(session, theater_name)
         else:
@@ -28,12 +28,12 @@ async def get_performances(
 
 
 @router.get("/{performance_id}")
-async def get_performance_by_id(performance_id: int) -> Performance:
+async def get_performance_by_id(performance_id: int) -> PerformanceResponse:
     """
     Get performance by ID.
     """
     with Session(engine) as session:
-        service = PerformanceService()
+        service = PerformanceResponseService()
         performance = service.get_by_id(session, performance_id)
         if performance is None:
             raise HTTPException(
